@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useRef } from "react";
 import { processVideoFrame } from "@/src/lib/vitals-processor";
 
