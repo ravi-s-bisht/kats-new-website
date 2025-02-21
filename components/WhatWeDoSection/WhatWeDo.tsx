@@ -69,6 +69,8 @@ function WhatWeDo() {
               src={"/images/avatarAxAi.png"}
               alt="Platform Overview"
               className="platform-image"
+              width={1000}
+              height={600}
             />
           </div>
         </div>

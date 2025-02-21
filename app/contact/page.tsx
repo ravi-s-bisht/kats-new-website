@@ -22,11 +22,26 @@ export default function Contact() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ContactFormData>();
 
   const onSubmit: SubmitHandler<ContactFormData> = async (data) => {
-    console.log(data);
-    toast.success("Message sent successfully!");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+
+      toast.success("Message sent successfully!");
+      reset();
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    }
 
     // try {
     //   const response = await fetch("https://theavatarx.com/api/contact", {
@@ -52,7 +67,11 @@ export default function Contact() {
       <section className="inner-hero-section">
         <div className="hero-gradient"></div>
         <div className="position-relative">
-          <Image src={ContactImg} className="hero-banner" alt="AvatarX Health" />
+          <Image
+            src={ContactImg}
+            className="hero-banner"
+            alt="AvatarX Health"
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -101,7 +120,9 @@ export default function Contact() {
                     placeholder="Your Name"
                     {...register("name", { required: "Name is required" })}
                   />
-                  {errors.name && <p className="form-error">{errors.name.message}</p>}
+                  {errors.name && (
+                    <p className="form-error">{errors.name.message}</p>
+                  )}
                 </div>
                 <div className="form-wrapper">
                   <input
@@ -116,25 +137,35 @@ export default function Contact() {
                       },
                     })}
                   />
-                  {errors.email && <p className="form-error">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="form-error">{errors.email.message}</p>
+                  )}
                 </div>
                 <div className="form-wrapper">
                   <input
                     type="text"
                     className="contact-field"
                     placeholder="Subject"
-                    {...register("subject", { required: "Subject is required" })}
+                    {...register("subject", {
+                      required: "Subject is required",
+                    })}
                   />
-                  {errors.subject && <p className="form-error">{errors.subject.message}</p>}
+                  {errors.subject && (
+                    <p className="form-error">{errors.subject.message}</p>
+                  )}
                 </div>
                 <div className="form-wrapper">
                   <textarea
                     rows={4}
                     className="contact-field"
                     placeholder="Message"
-                    {...register("message", { required: "Message is required" })}
+                    {...register("message", {
+                      required: "Message is required",
+                    })}
                   ></textarea>
-                  {errors.message && <p className="form-error">{errors.message.message}</p>}
+                  {errors.message && (
+                    <p className="form-error">{errors.message.message}</p>
+                  )}
                 </div>
                 <button type="submit" className="submit-btn">
                   Submit
@@ -150,4 +181,3 @@ export default function Contact() {
     </div>
   );
 }
-    
